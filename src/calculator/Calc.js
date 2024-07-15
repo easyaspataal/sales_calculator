@@ -30,6 +30,8 @@ const Calc = () => {
   const [finalPrice1, setFinalPrice1] = useState(null);
   const [finalPrice2, setFinalPrice2] = useState(null); // State for second calculator
   const [loading, setLoading] = useState(true);
+  const [noDataFound1, setNoDataFound1] = useState(false); // State to track no data found for calculator 1
+  const [noDataFound2, setNoDataFound2] = useState(false); // State to track no data found for calculator 2
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,6 +99,10 @@ const Calc = () => {
             gstPrice,
             finalPrice
           });
+          setNoDataFound1(false);
+        } else {
+          setFinalPrice1(null);
+          setNoDataFound1(true);
         }
       } else {
         const matchedPlan = planData.find(plan =>
@@ -121,8 +127,15 @@ const Calc = () => {
             gstPrice,
             finalPrice
           });
+          setNoDataFound1(false);
+        } else {
+          setFinalPrice1(null);
+          setNoDataFound1(true);
         }
       }
+    } else {
+      setFinalPrice1(null);
+      setNoDataFound1(true);
     }
   };
 
@@ -150,6 +163,10 @@ const Calc = () => {
           gstPrice,
           finalPrice
         });
+        setNoDataFound2(false);
+      } else {
+        setFinalPrice2(null);
+        setNoDataFound2(true);
       }
     } else {
       const matchedPlan = planData.find(plan =>
@@ -174,6 +191,10 @@ const Calc = () => {
           gstPrice,
           finalPrice
         });
+        setNoDataFound2(false);
+      } else {
+        setFinalPrice2(null);
+        setNoDataFound2(true);
       }
     }
   };
@@ -185,7 +206,7 @@ const Calc = () => {
           <Card>
             <CardContent>
               <Typography variant="h5" component="h2" gutterBottom>
-                Calculator 1
+               Number of Lives Based Input
               </Typography>
               <form>
                 <FormControl fullWidth margin="normal">
@@ -275,6 +296,9 @@ const Calc = () => {
                   <Typography>Final Price: {finalPrice1.finalPrice}</Typography>
                 </div>
               )}
+              {noDataFound1 && (
+                <Typography variant="h6" color="error">No data found</Typography>
+              )}
             </CardContent>
           </Card>
         </Grid>
@@ -283,7 +307,7 @@ const Calc = () => {
           <Card>
             <CardContent>
               <Typography variant="h5" component="h2" gutterBottom>
-                Calculator 2
+                Insurance Based Input
               </Typography>
               <form>
                 <FormControl fullWidth margin="normal">
@@ -366,6 +390,9 @@ const Calc = () => {
                   <Typography>GST: {finalPrice2.gstPrice}</Typography>
                   <Typography>Final Price: {finalPrice2.finalPrice}</Typography>
                 </div>
+              )}
+              {noDataFound2 && (
+                <Typography variant="h6" color="error">No data found</Typography>
               )}
             </CardContent>
           </Card>
