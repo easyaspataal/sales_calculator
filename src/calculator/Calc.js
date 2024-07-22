@@ -64,6 +64,7 @@ const Calc = () => {
   const frequencies = getUniqueValues('Premium Payment Frequency');
   const waitingPeriods = getUniqueValues('Waiting Period');
   const insuranceVal = getUniqueValues('Insurance');
+  const rahejaAge = getUniqueValues('Average Age of Lives Covered(Raheja)')
 
   const handleSubmit1 = () => {
     // Find the matching insurance provider
@@ -210,7 +211,7 @@ const Calc = () => {
               </Typography>
               <form>
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Number of Lives</InputLabel>
+                  <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Number of Lives</InputLabel>
                   <Select
                     value={selectedLives1}
                     onChange={(e) => setSelectedLives1(e.target.value)}
@@ -221,7 +222,7 @@ const Calc = () => {
                   </Select>
                 </FormControl>
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Waiting Period</InputLabel>
+                  <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Waiting Period</InputLabel>
                   <Select
                     value={selectedWaitingPeriod1}
                     onChange={(e) => setSelectedWaitingPeriod1(e.target.value)}
@@ -232,7 +233,7 @@ const Calc = () => {
                   </Select>
                 </FormControl>
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Premium Payment Frequency</InputLabel>
+                  <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Premium Payment Frequency</InputLabel>
                   <Select
                     value={selectedFrequency1}
                     onChange={(e) => setSelectedFrequency1(e.target.value)}
@@ -243,7 +244,7 @@ const Calc = () => {
                   </Select>
                 </FormControl>
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Maternity Cover</InputLabel>
+                  <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Maternity Cover</InputLabel>
                   <Select
                     value={selectedMaternity1}
                     onChange={(e) => setSelectedMaternity1(e.target.value)}
@@ -253,8 +254,26 @@ const Calc = () => {
                   </Select>
                 </FormControl>
                 <FormControl fullWidth margin="normal">
+  {selectedWaitingPeriod1 && (
+    <>
+      <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Average Age of Lives Covered</InputLabel>
+      <Select
+        value={selectedAge1}
+        onChange={(e) => setSelectedAge1(e.target.value)}
+      >
+        {(selectedWaitingPeriod1 === "30 days" ? ages : rahejaAge).map(age => (
+          <MenuItem key={age} value={age}>{age}</MenuItem>
+        ))}
+      </Select>
+    </>
+  )}
+</FormControl>
+
+                
+                {/* <FormControl fullWidth margin="normal">
                   <InputLabel>Average Age of Lives Covered</InputLabel>
-                  <Select
+                  {
+                    selectedWaitingPeriod1 == "30 days" &&     <Select
                     value={selectedAge1}
                     onChange={(e) => setSelectedAge1(e.target.value)}
                   >
@@ -262,9 +281,21 @@ const Calc = () => {
                       <MenuItem key={age} value={age}>{age}</MenuItem>
                     ))}
                   </Select>
-                </FormControl>
+                  }
+                    {
+                    selectedWaitingPeriod1 == "0 days" &&     <Select
+                    value={selectedAge1}
+                    onChange={(e) => setSelectedAge1(e.target.value)}
+                  >
+                    {ages.map(age => (
+                      <MenuItem key={age} value={age}>{age}</MenuItem>
+                    ))}
+                  </Select>
+                  }
+              
+                </FormControl> */}
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Plan</InputLabel>
+                  <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Plan</InputLabel>
                   <Select
                     value={selectedPlan1}
                     onChange={(e) => setSelectedPlan1(e.target.value)}
@@ -275,7 +306,7 @@ const Calc = () => {
                   </Select>
                 </FormControl>
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Coverage</InputLabel>
+                  <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Coverage</InputLabel>
                   <Select
                     value={selectedCoverage1}
                     onChange={(e) => setSelectedCoverage1(e.target.value)}
@@ -290,10 +321,10 @@ const Calc = () => {
               {finalPrice1 && (
                 <div>
                   <Divider style={{ margin: '20px 0' }} />
-                  <Typography variant="h6">Recommended Plan: {finalPrice1.recomedPlan}</Typography>
-                  <Typography>Flashaid Price: {finalPrice1.sumInsuredPrice}</Typography>
-                  <Typography>GST: {finalPrice1.gstPrice}</Typography>
-                  <Typography>Final Price: {finalPrice1.finalPrice}</Typography>
+                  <Typography variant="h6">Recommended Plan: ₹ {finalPrice1.recomedPlan}</Typography>
+                  <Typography>Flashaid Price(exclusive gst): ₹ {finalPrice1.sumInsuredPrice}</Typography>
+                  <Typography>GST (18%): ₹ {finalPrice1.gstPrice}</Typography>
+                  <Typography>Final Price (inclusive gst): ₹ {finalPrice1.finalPrice}</Typography>
                 </div>
               )}
               {noDataFound1 && (
@@ -311,7 +342,7 @@ const Calc = () => {
               </Typography>
               <form>
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Insurance</InputLabel>
+                  <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Insurance</InputLabel>
                   <Select
                     value={selectedInsurance2}
                     onChange={(e) => setSelectedInsurance2(e.target.value)}
@@ -322,18 +353,22 @@ const Calc = () => {
                   </Select>
                 </FormControl>
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Average Age of Lives Covered</InputLabel>
-                  <Select
-                    value={selectedAge2}
-                    onChange={(e) => setSelectedAge2(e.target.value)}
-                  >
-                    {ages.map(age => (
-                      <MenuItem key={age} value={age}>{age}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel>Plan</InputLabel>
+  {selectedInsurance2 && (
+    <>
+        <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Average Age of Lives Covered</InputLabel>
+      <Select
+        value={selectedAge2}
+        onChange={(e) => setSelectedAge2(e.target.value)}
+      >
+        {(selectedInsurance2 === 'Raheja' ? rahejaAge : ages).map(age => (
+          <MenuItem key={age} value={age}>{age}</MenuItem>
+        ))}
+      </Select>
+    </>
+  )}
+</FormControl>
+               {selectedInsurance2 !== 'Raheja' && <FormControl fullWidth margin="normal">
+                  <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Plan</InputLabel>
                   <Select
                     value={selectedPlan2} 
                     onChange={(e) => setSelectedPlan2(e.target.value)}
@@ -342,9 +377,9 @@ const Calc = () => {
                       <MenuItem key={plan} value={plan}>{plan}</MenuItem>
                     ))}
                   </Select>
-                </FormControl>
+                </FormControl>}
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Coverage</InputLabel>
+                  <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Coverage</InputLabel>
                   <Select
                     value={selectedCoverage2}
                     onChange={(e) => setSelectedCoverage2(e.target.value)}
@@ -355,7 +390,7 @@ const Calc = () => {
                   </Select>
                 </FormControl>
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Premium Payment Frequency</InputLabel>
+                  <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Premium Payment Frequency</InputLabel>
                   <Select
                     value={selectedFrequency2}
                     onChange={(e) => setSelectedFrequency2(e.target.value)}
@@ -366,7 +401,7 @@ const Calc = () => {
                   </Select>
                 </FormControl>
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Maternity Cover</InputLabel>
+                  <InputLabel sx={{ fontSize: '1.5rem' }} shrink>Maternity Cover</InputLabel>
                   <Select
                     value={selectedMaternity2}
                     onChange={(e) => setSelectedMaternity2(e.target.value)}
@@ -386,9 +421,9 @@ const Calc = () => {
                 <div>
                   <Divider style={{ margin: '20px 0' }} />
                   <Typography variant="h6">Recommended Plan: {finalPrice2.recomedPlan}</Typography>
-                  <Typography>Flashaid Price: {finalPrice2.sumInsuredPrice}</Typography>
-                  <Typography>GST: {finalPrice2.gstPrice}</Typography>
-                  <Typography>Final Price: {finalPrice2.finalPrice}</Typography>
+                  <Typography>Flashaid Price (exclusive gst): ₹ {finalPrice2.sumInsuredPrice}</Typography>
+                  <Typography>GST (18%): ₹ {finalPrice2.gstPrice}</Typography>
+                  <Typography>Final Price (inclusive gst): ₹ {finalPrice2.finalPrice}</Typography>
                 </div>
               )}
               {noDataFound2 && (
